@@ -22,7 +22,7 @@ the script is publicly available if you want to
 benefit from new features and bugfixes. You can
 also submit feature requests and bug reports.
 Code is found here:
-https://gist.github.com/1904439
+https://github.com/thaostra/Imgur-Clop-Compilation
 
 It is recommended to update occasionally as so:
 $ cd ./imgurClopCompilation
