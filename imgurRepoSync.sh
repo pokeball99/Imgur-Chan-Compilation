@@ -21,10 +21,11 @@ function checkRemoveDupes(){
 # If it does not exist, add it for keeping history
 function checkInChangelog(){
   ALBUM="$1"
+  DIR="${PWD##*/}"
 
   if ! grep -q "$ALBUM" ../changelog; then
     echo "Adding $ALBUM to ../changelog"
-    echo "$(date +%Y-%m-%d-%H-%M-%S) - http://imgur.com/a/$ALBUM" >> ../changelog
+    echo "$(date +%Y-%m-%d-%H-%M-%S) - $ALBUM - $DIR" >> ../changelog
   fi
 }
 
@@ -99,25 +100,32 @@ function generateOnlineAlbumPage(){
 
   echo "Generating web page for browsing online imgur albums"
 
-  WEBPAGE="$(echo -e "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>$NAME</title>\n</head>\n<body>")"
+  echo "<!DOCTYPE html>" > ./"$NAME.html"
+  echo "<html lang=\"en\">" >> ./"$NAME.html"
+  echo "<head>" >> ./"$NAME.html"
+  echo "<meta charset=\"utf-8\">" >> ./"$NAME.html"
+  echo "<title>$NAME</title>" >> ./"$NAME.html"
+  echo "</head>" >> ./"$NAME.html"
+  echo "<body>" >> ./"$NAME.html"
 
-  cat ./test.conf | while read LINE; do
+  echo "$CONFIG" | while read LINE; do
     if echo "$LINE" | grep -q "|"; then
-      DIRECTORY="$(echo "$LINE" | cut -d "|" -f1 | sed 's| *$||g')"
-      ALBUMLIST="$(echo "$LINE" | cut -d "|" -f2)"
+      DIRECTORY="$(echo "$LINE" | cut -d "|"  -f1 | sed 's| *$||g')"
+      ALBUMLIST="$(echo "$LINE" | cut -d "|"  -f2)"
     elif echo "$LINE" | grep -q "-"; then
-      DIRECTORY="$(echo "$LINE" | cut -d "-" -f1 | sed 's| *$||g')"
-      ALBUMLIST="$(echo "$LINE" | cut -d "-" -f2)"
+      DIRECTORY="$(echo "$LINE" | cut -d "-"  -f1 | sed 's| *$||g')"
+      ALBUMLIST="$(echo "$LINE" | cut -d "-"  -f2)"
     fi
 
-    WEBPAGE+="<p>$DIRECTORY<p><ul>"
+    echo "<p>$DIRECTORY<p>" >> ./"$NAME.html"
+    echo "<ul>" >> ./"$NAME.html"
     for ALBUM in $ALBUMLIST; do
-      WEBPAGE+="<li><a href=\"http://imgur.com/a/$ALBUM\">http://imgur.com/a/$ALBUM</a>"
+      echo "<li><a href=\"http://imgur.com/a/$ALBUM\">http://imgur.com/a/$ALBUM</a>" >> ./"$NAME.html"
     done
-    WEBPAGE+="</ul>"
+    echo "</ul>" >> ./"$NAME.html"
   done
-  WEBPAGE+="</body></html>"
-  echo "$WEBPAGE" > ./"$NAME".html
+  echo "</body>" >> ./"$NAME.html"
+  echo "</html>" >> ./"$NAME.html"
 }
 
 # Check for fdupes before beginning the main task
