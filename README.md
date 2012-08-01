@@ -26,4 +26,5 @@ https://github.com/thaostra/Imgur-Clop-Compilation
 
 It is recommended to update occasionally as so:
 $ cd ./imgurClopCompilation
+
 $ ./imgurRepoSync.sh
