@@ -23,8 +23,12 @@ function checkInChangelog(){
   ALBUM="$1"
   DIR="${PWD##*/}"
 
-  if ! grep -q "$ALBUM" ../changelog; then
-    echo "Adding $ALBUM to ../changelog"
+  if ! [ -e ../changelog ]; then
+    echo "Creating changelog to keep history of albums"
+    echo "Albums:" >> ../changelog
+  fi
+  if ! grep -q -F "$ALBUM - $DIR" ../changelog; then
+    echo "Adding $ALBUM in to ../changelog"
     echo "$(date +%Y-%m-%d-%H-%M-%S) - $ALBUM - $DIR" >> ../changelog
   fi
 }
