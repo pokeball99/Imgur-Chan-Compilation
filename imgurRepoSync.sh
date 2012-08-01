@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables to be set depending on preferences
-REPOCONF="test.conf"
+REPOCONF="imgurRepo.conf"
 FIXSUFFIX=true
 REMOVEDUPES=true
 GENWEBPAGE=true
@@ -28,7 +28,7 @@ function checkInChangelog(){
     echo "Albums:" >> ../changelog
   fi
   if ! grep -q -F "$ALBUM - $DIR" ../changelog; then
-    echo "Adding $ALBUM in to ../changelog"
+    echo "Adding $ALBUM in $DIR to ../changelog"
     echo "$(date +%Y-%m-%d-%H-%M-%S) - $ALBUM - $DIR" >> ../changelog
   fi
 }
