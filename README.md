@@ -6,8 +6,8 @@ themes like characters or fetishes.
 
 By default, deduplication is performed to
 reduce the number of extra files that would
-otherwise increase archive download size, along
-with file suffix correction for particularly
+otherwise increase archive download size. File
+suffix correction is also performed for 
 sensitive image viewers like Eye of GNOME.
 
 Since albums can get larger over time as new
@@ -24,3 +24,12 @@ also submit feature requests and bug reports.
 
 Code is found here:
 https://github.com/thaostra/Imgur-Clop-Compilation
+
+A special thanks to:
+
+-Artists who drew and uploaded their work.
+-Users who found the images and uploaded them onto Imgur
+-Git project for making version control sane
+-GNU project for the various utilities needed for scripting
+-7zip project for a powerful file archive format 
+-Github for hosting this project's git repository
