@@ -17,7 +17,7 @@ but it will only work in Unix-like systems
 like GNU/Linux or environments like Cygwin for
 Windows. Even if the script is not able to run,
 it will not impede on the ability to view files
-that come in with release of the ICC. Code for
+that come in each release of the ICC. Code for
 the script is publicly available if you want to
 benefit from new features and bugfixes. You can
 also submit feature requests and bug reports.
