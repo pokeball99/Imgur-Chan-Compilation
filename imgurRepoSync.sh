@@ -150,11 +150,10 @@ echo "$CONFIG" | while read LINE; do
     DIRECTORY="$(echo "$LINE" | cut -d "-"  -f1 | sed 's| *$||g')"
     ALBUMLIST="$(echo "$LINE" | cut -d "-"  -f2)"
   fi
-
   mkdir -p "$DIRECTORY"
   echo "Updating album $DIRECTORY"
   cd "$DIRECTORY"
-
+  LINKTOTAL="0"
   for ALBUM in $ALBUMLIST; do
     NEWIMAGES=""
     checkInChangelog "$ALBUM"
@@ -167,10 +166,11 @@ echo "$CONFIG" | while read LINE; do
         NEWIMAGES+="$IMAGE "
       fi
     done
-
+    
     ITERATOR="0"
     FILECOUNT="$(ls | wc -l)"
     LINKCOUNT="$(echo "$NEWIMAGES" | wc -w)"
+    LINKTOTAL="$(($LINKCOUNT + $LINKTOTAL))"
     for IMAGE in $NEWIMAGES; do
       ITERATOR="$((ITERATOR + 1))"
       FILECOUNT="$(($FILECOUNT + 1))"
@@ -194,8 +194,10 @@ echo "$CONFIG" | while read LINE; do
   cd -
   # Check for duplicates unless ORDERALBUM is set to true
   # since removing duplicates can break album ordering
-  if [ "$REMOVEDUPES" = true ] && [ "$ORDERALBUM" = false ]; then
-    checkForAndRemoveDuplicates "$DIRECTORY"
+  if [ "$REMOVEDUPES" = true ]; then
+    if [ "$LINKTOTAL" -gt "0" ] && [ "$ORDERALBUM" = false ]; then
+      checkForAndRemoveDuplicates "$DIRECTORY"
+    fi
   fi
   echo "Update for album $DIRECTORY complete"
   echo
