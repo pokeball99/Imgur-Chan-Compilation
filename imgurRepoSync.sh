@@ -122,15 +122,14 @@ function generateOnlineAlbumPage(){
       ALBUMLIST="$(echo "$LINE" | cut -d "-"  -f2)"
     fi
 
-    echo "<p>$DIRECTORY<p>" >> ./"$NAME.html"
-    echo "<ul>" >> ./"$NAME.html"
+    echo "<p>$DIRECTORY<p>"
+    echo "<ul>"
     for ALBUM in $ALBUMLIST; do
-      echo "<li><a href=\"http://imgur.com/a/$ALBUM\">http://imgur.com/a/$ALBUM</a>" >> ./"$NAME.html"
+      echo "<li><a href=\"http://imgur.com/a/$ALBUM\">http://imgur.com/a/$ALBUM</a>"
     done
-    echo "</ul>" >> ./"$NAME.html"
-  done
-  echo "</body>" >> ./"$NAME.html"
-  echo "</html>" >> ./"$NAME.html"
+    echo "</ul>"
+  done >> ./"$NAME.html"
+  echo -e "</body>\n</html>" >> ./"$NAME.html"
 }
 
 function generateBareBonesPackage(){
