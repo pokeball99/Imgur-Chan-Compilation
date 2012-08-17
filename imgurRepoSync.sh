@@ -5,6 +5,7 @@ REPOCONF="imgurRepo.conf"
 FIXSUFFIX=true
 REMOVEDUPES=true
 GENWEBPAGE=true
+BAREBONES=false
 
 # Checks if program fdupes is available
 # if it is not, then exit prematurely
@@ -132,6 +133,41 @@ function generateOnlineAlbumPage(){
   echo "</html>" >> ./"$NAME.html"
 }
 
+function generateBareBonesPackage(){
+  CONFIG="$1"
+  NAME="${PWD##*/}"
+
+  echo "Generating barebones package"
+  mkdir -p ./".$NAME"
+
+  echo "$CONFIG" | while read LINE; do
+    if echo "$LINE" | grep -q "|"; then
+      DIRECTORY="$(echo "$LINE" | cut -d "|" -f1 | sed 's| *$||g')"
+      ALBUMLIST="$(echo "$LINE" | cut -d "|"  -f2)"
+    elif echo "$LINE" | grep -q "-"; then
+      DIRECTORY="$(echo "$LINE" | cut -d "-" -f1 | sed 's| *$||g')"
+      ALBUMLIST="$(echo "$LINE" | cut -d "-" -f2)"
+    fi
+
+    mkdir -p ./".$NAME"/"$DIRECTORY"
+
+    for ALBUM in $ALBUMLIST; do
+      echo "Links: " > ./".$NAME"/"$DIRECTORY"/".$ALBUM-links.txt"
+      FILELIST="$(grep "http://i.imgur.com/" ./"$DIRECTORY"/".$ALBUM-links.txt" | cut -d\/ -f4)"
+      for LINK in $FILELIST; do
+        if ! [ -e ./"$DIRECTORY"/"$LINK" ]; then
+          echo "http://i.imgur.com/$LINK"
+        fi
+      done >> ./".$NAME"/"$DIRECTORY"/".$ALBUM-links.txt"
+    done
+  done
+
+  cp ./"$CONFIG" ./imgurRepoSync.sh ./README.md ./changelog ./".$NAME" 
+  tar czf "$NAME-$(date +%Y-%m-%d-%H-%M-%S).tgz" ".$NAME"/
+  rm -rf ./".$NAME"
+  echo "Package generated"
+}
+
 # Check for fdupes before beginning the main task
 # of updating the imgur repository
 checkRemoveDupes
@@ -205,6 +241,12 @@ done
 
 if [ "$GENWEBPAGE" = true ]; then
   generateOnlineAlbumPage "$CONFIG"
+fi
+
+# Should be left disabled unless needed as it can take a few
+# moments to run
+if [ "$BAREBONES" = true ]; then
+  generateBareBonesPackage "$CONFIG"
 fi
 
 echo "Update complete!"
