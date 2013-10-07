@@ -93,8 +93,9 @@ function imgurLinksDownload(){
   ALBUM="$1"
 
   wget -q -O - "http://imgur.com/a/$ALBUM/layout/blog" |
-  grep "<a href=\"http://i.imgur.com/" |
-  cut -d \" -f2
+  grep "<a href=\"//i.imgur.com/" |
+  cut -d \" -f2 |
+  sed 's/.*/http:&/'
 }
 
 # Create a minimal web page to view albums that have been
