@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables to be set depending on preferences
-REPOCONF="imgurRepo.conf"
+REPOCONF="imgurRepo2.conf"
 FIXSUFFIX=true
 REMOVEDUPES=true
 GENWEBPAGE=true
